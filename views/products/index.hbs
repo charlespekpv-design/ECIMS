@@ -1,0 +1,98 @@
+<div class="page-header">
+    <h2>{{title}}</h2>
+</div>
+
+<!-- Search Form (demonstrates SELECT with multiple filters) -->
+<div class="search-section">
+    <h3>🔍 Search & Filter Products</h3>
+    <form action="/products/search" method="GET" class="search-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="keyword">Keyword</label>
+                <input type="text" id="keyword" name="keyword" placeholder="Search by name or description" value="{{searchParams.keyword}}">
+            </div>
+            
+            <div class="form-group">
+                <label for="category_id">Category</label>
+                <select id="category_id" name="category_id">
+                    <option value="">All Categories</option>
+                    {{#each
+ categories}}
+                    <option value="{{category_id}}" {{#if
+ (eq ../searchParams.category_id category_id)}}selected{{/if
+}}>
+                        {{category_name}}
+                    </option>
+                    {{/each
+}}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="min_price">Min Price ($)</label>
+                <input type="number" id="min_price" name="min_price" step="0.01" min="0" placeholder="0.00" value="{{searchParams.min_price}}">
+            </div>
+            
+            <div class="form-group">
+                <label for="max_price">Max Price ($)</label>
+                <input type="number" id="max_price" name="max_price" step="0.01" min="0" placeholder="999.99" value="{{searchParams.max_price}}">
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Search</button>
+            <a href="/" class="btn-secondary">Clear Filters</a>
+        </div>
+    </form>
+</div>
+
+<!-- Products Table -->
+<div class="table-section">
+    <h3>Product Listing ({{products.length}} items)</h3>
+    
+    {{#if
+ products.length}}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Category</th>
+                <th>Supplier</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each
+ products}}
+            <tr>
+                <td>{{product_id}}</td>
+                <td><strong>{{product_name}}</strong></td>
+                <td>{{description}}</td>
+                <td class="price">${{formatPrice price}}</td>
+                <td class="stock {{#if
+ (eq stock_quantity 0)}}out-of-stock{{/if
+}}">
+                    {{stock_quantity}}
+                </td>
+                <td>{{category_name}}</td>
+                <td>{{supplier_name}}</td>
+                <td class="actions">
+                    <a href="/products/edit/{{product_id}}" class="btn-edit">Edit</a>
+                    <a href="/products/delete/{{product_id}}" class="btn-delete">Delete</a>
+                </td>
+            </tr>
+            {{/each
+}}
+        </tbody>
+    </table>
+    {{else}}
+    <div class="no-results">
+        <p>No products found. Try adjusting your search filters or <a href="/products/create">add a new product</a>.</p>
+    </div>
+    {{/if
+}}
+</div>

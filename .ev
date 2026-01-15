@@ -1,0 +1,5 @@
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=Bruo1008
+DB_NAME=ecommerce_inventory
+PORT=3000
